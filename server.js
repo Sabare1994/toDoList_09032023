@@ -23,7 +23,7 @@ mongoose.set("strictQuery",false);
 const connectDB = async() => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB Connected");
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.log(error);
     process.exit(1);
@@ -182,6 +182,8 @@ app.get("/about", function(req, res){
   res.render("about");
 });
 
-app.listen(PORT, function() {
-  console.log("Server started on port 3000");
+connectDB().then(() => {
+  app.listen(PORT, function () {
+    console.log("Server started on port " + PORT);
+  })
 });
